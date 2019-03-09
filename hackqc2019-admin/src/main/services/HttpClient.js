@@ -1,20 +1,21 @@
 const URL = 'https://9o0kewwo4l.execute-api.ca-central-1.amazonaws.com/api/'
 
-class Client {
+class HttpClient {
 
   async get(endpoint, options) {
     return await this.sendRequest('GET', endpoint, undefined)
   }
 
-  async post(endpoint,body,options) {
-    return await this.sendRequest('POST',endpoint,body)
+  async post(endpoint, body, options) {
+    return await this.sendRequest('POST', endpoint, body)
   }
 
-  async sendRequest(method, endpoint,body) {
-    const options = { method: method,
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(body)
-       }
+  async sendRequest(method, endpoint, body) {
+    const options = {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }
 
     const response = await new Promise((resolve, reject) => {
       fetch(URL + endpoint, options)
@@ -50,4 +51,4 @@ class Client {
   }
 }
 
-export default new Client()
+export default new HttpClient()
