@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -20,6 +21,9 @@ type State = {
 
 type Props = {
   classes: any,
+  history: {
+    push: Function,
+  },
 };
 
 class OrgList extends React.Component<Props,State>{
@@ -38,6 +42,10 @@ class OrgList extends React.Component<Props,State>{
     this.setState({orgs: result.organizations})
   }
 
+  navigateToOrg = (org) => {
+    this.props.history.push(`/org/${org.reference}`, { org: org })
+  }
+
   render() {
   const { classes } = this.props;
   const {orgs} = this.state;
@@ -45,7 +53,7 @@ class OrgList extends React.Component<Props,State>{
     <List className={classes.root}>
       {
         orgs.map(organization => (
-          <ListItem key={organization.reference}>
+          <ListItem button key={organization.reference} onClick={() =>this.navigateToOrg(organization)}>
             <ListItemText primary={organization.name} secondary={organization.address} />
           </ListItem>
         ))
@@ -54,5 +62,5 @@ class OrgList extends React.Component<Props,State>{
   );
 }}
 
-export default withStyles(styles)(OrgList);
+export default withRouter(withStyles(styles)(OrgList));
 
