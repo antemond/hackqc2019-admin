@@ -32,7 +32,7 @@ class AddressInput extends React.Component<Props, State> {
       const results = await geocodeByAddress(address);
       const { lat, lng } = await getLatLng(results[0]);
 
-      console.log({lat,lng})
+      this.props.onSelect({address, position: {lat,lon:lng}})
     } catch (e) {
       console.log(e)
     }
@@ -49,7 +49,7 @@ class AddressInput extends React.Component<Props, State> {
     const {value} = this.props;
 
     return (
-      <FormControl>
+      <FormControl style={{width: '100%', marginTop: 15}}>
         <InputLabel>Address</InputLabel>
         
         <PlacesAutocomplete

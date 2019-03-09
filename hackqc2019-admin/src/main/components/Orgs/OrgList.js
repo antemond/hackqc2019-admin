@@ -1,65 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
-const rows = [
-  {
-    uuid: 123123,
-    name: "L'Auberivière",
-    description: 'sup dudes',
-    position: {
-      x: 0.0, 
-      y: 0.0
-    },
-    services: [
-      {
-        reference: 1231231,
-        type: 'food',
-        amout: 5,
-        title: 'Bol de soupe',
-      }
-    ]
-  },
-  {
-    uuid: 12312312312,
-    name: "L'Auberivière",
-    description: 'sup dudes',
-    position: {
-      x: 0.0, 
-      y: 0.0
-    },
-    services: [
-      {
-        reference: 12312222231,
-        type: 'food',
-        amout: 5,
-        title: 'Bol de soupe',
-      }
-    ]
-  },
-  {
-    uuid: 1231343,
-    name: "L'Auberivière",
-    description: 'sup dudes',
-    position: {
-      x: 0.0, 
-      y: 0.0
-    },
-    services: [
-      {
-        reference: 1231231,
-        type: 'food',
-        amout: 5,
-        title: 'Bol de soupe',
-      }
-    ]
-  }
-];
-
-
+import HttpClient from '../../services/HttpClient';
 
 const styles = theme => ({
   root: {
@@ -70,24 +14,45 @@ const styles = theme => ({
   },
 });
 
-function FolderList(props) {
-  const { classes } = props;
+type State = {
+  orgs : any[],
+};
+
+type Props = {
+  classes: any,
+};
+
+class OrgList extends React.Component<Props,State>{
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      orgs: [],
+    }
+  }
+
+  async componentDidMount() {
+    const result = await HttpClient.get('organizations', undefined);
+    console.log(result)
+    this.setState({orgs: result.organizations})
+  }
+
+  render() {
+  const { classes } = this.props;
+  const {orgs} = this.state;
   return (
     <List className={classes.root}>
       {
-        rows.map(organisation => (
-          <ListItem>
-            <ListItemText primary="L'Auberivière" secondary="Ville de Québec" />
+        orgs.map(organization => (
+          <ListItem key={organization.reference}>
+            <ListItemText primary={organization.name} secondary={organization.address} />
           </ListItem>
         ))
       }
     </List>
   );
-}
+}}
 
-FolderList.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(FolderList);
+export default withStyles(styles)(OrgList);
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Paper, TextField, withStyles } from '@material-ui/core';
+import { Paper, TextField, withStyles, Button } from '@material-ui/core';
 import AddressInput from '../Map/AddressInput';
+import HttpClient from '../../services/HttpClient';
 
 
 const styles = theme => ({
@@ -43,8 +44,8 @@ class CreateOrg extends React.Component<Props,State> {
       name: '',
       description: '',
       position: {
-        x:0,
-        y:0
+        lat:0,
+        lon:0
       },
       address: '',
     }
@@ -54,13 +55,23 @@ class CreateOrg extends React.Component<Props,State> {
     this.setState({ [prop]: event.target.value });
   };
 
+  submit = async () => {
+    console.log(this.state)
+    try {
+      const result = await HttpClient.post('organizations',{...this.state, services:[]})
+      console.log(result)
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   render() {
     const {classes} = this.props;
     return (
       <div style={{display:'flex', justifyContent: 'center'}}>
         <Paper style={{width: '60%', alignSelf: 'center'}}>
           <form style={{margin: '40px',}} >
-            <div style={{alignSelf: 'center',marginHorizontal: 30, display: 'flex', flexDirection: 'column',}}>
+            <div style={{alignSelf: 'center',marginHorizontal: 30, display: 'flex', flexDirection: 'column',justifyContent:'center', alignItems:'center'}}>
               <h3 style={{textAlign: 'center'}}>Créer une organisation</h3>
                 <TextField
                 id="name"
@@ -70,6 +81,7 @@ class CreateOrg extends React.Component<Props,State> {
                 onChange={this.handleChange('name')}
                 margin="normal"
                 variant="outlined"
+                style={{width: '100%'}}
               />
               <TextField
                 id="description"
@@ -78,10 +90,19 @@ class CreateOrg extends React.Component<Props,State> {
                 className={classes.textField}
                 onChange={this.handleChange('description')}
                 margin="normal"
+                style={{width: '100%'}}
                 variant="outlined"
               />
 
-              <AddressInput value={this.state.address} onChange={( value )=> this.setState({address: value})} />
+              <AddressInput 
+                value={this.state.address} 
+                onChange={( value )=> this.setState({address: value})} 
+                onSelect={({address,position})=>this.setState({address,position})} 
+              />
+
+              <Button variant="outlined" color="primary" onClick={this.submit} style={{width: '30%', marginTop: 20}}>
+                Enregistrer
+              </Button>
             </div>
           </form>
         </Paper>
