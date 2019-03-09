@@ -1,0 +1,93 @@
+import React from 'react';
+import { Paper, TextField, withStyles } from '@material-ui/core';
+import AddressInput from '../Map/AddressInput';
+
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+  dense: {
+    marginTop: 16,
+  },
+  menu: {
+    width: 200,
+  },
+});
+
+type Props = {
+  classes: any,
+};
+
+type State = {
+  name: string,
+  description: string,
+  position: {
+    lon: number,
+    lat: number,
+  },
+  address: any,
+};
+
+class CreateOrg extends React.Component<Props,State> {
+
+  constructor(props) {
+    super(props);
+
+    this.state = { 
+      name: '',
+      description: '',
+      position: {
+        x:0,
+        y:0
+      },
+      address: '',
+    }
+  }
+
+  handleChange = prop => event => {
+    this.setState({ [prop]: event.target.value });
+  };
+
+  render() {
+    const {classes} = this.props;
+    return (
+      <div style={{display:'flex', justifyContent: 'center'}}>
+        <Paper style={{width: '60%', alignSelf: 'center'}}>
+          <form style={{margin: '40px',}} >
+            <div style={{alignSelf: 'center',marginHorizontal: 30, display: 'flex', flexDirection: 'column',}}>
+              <h3 style={{textAlign: 'center'}}>Créer une organisation</h3>
+                <TextField
+                id="name"
+                label="Nom"
+                className={classes.textField}
+                value={this.state.name}
+                onChange={this.handleChange('name')}
+                margin="normal"
+                variant="outlined"
+              />
+              <TextField
+                id="description"
+                label="Description"
+                value={this.state.description}
+                className={classes.textField}
+                onChange={this.handleChange('description')}
+                margin="normal"
+                variant="outlined"
+              />
+
+              <AddressInput value={this.state.address} onChange={( value )=> this.setState({address: value})} />
+            </div>
+          </form>
+        </Paper>
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles)(CreateOrg);
