@@ -7,8 +7,8 @@ function SimpleMap(props) {
   console.log(props)
   return(
     <GoogleMap
-    defaultZoom={7}
-    defaultCenter={{ lng:props.position.lat, lat: props.position.lon }}
+    defaultZoom={15}
+    defaultCenter={{ lat:props.position.lat, lng: props.position.lon }}
     > 
     <Marker position={{ lat: props.position.lat, lng: props.position.lon }} />
   </GoogleMap>
