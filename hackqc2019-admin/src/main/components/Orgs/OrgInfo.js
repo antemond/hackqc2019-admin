@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import SimpleMap from '../Map/SimpleMap';
 
 const styles = theme => ({
   root: {
@@ -48,12 +49,14 @@ function OrgInfo(props: Props){
         <Typography color="textSecondary">
           {org.description}
         </Typography>
+        <Typography color="textSecondary" style={{marginTop: 15}}>
+          {org.address}
+        </Typography>
       </div>
       <Divider variant="middle" />
       <div className={classes.section2}>
-        
+        <SimpleMap position={org.position} />
       </div>
-     
     </div>
       }
     </div>

@@ -34,7 +34,7 @@ class AddressInput extends React.Component<Props, State> {
 
       this.props.onSelect({address, position: {lat,lon:lng}})
     } catch (e) {
-      console.log(e)
+      //error
     }
   }
 
