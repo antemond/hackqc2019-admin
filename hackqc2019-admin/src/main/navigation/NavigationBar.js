@@ -99,7 +99,7 @@ class NavigationBar extends React.Component<Props>{
 
     return (
       <div className={classes.root}>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnS8S79cW4uFhoR0pfX72P0NR0xEiDa_8&libraries=places"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnS8S79cW4uFhoR0pfX72P0NR0xEiDa_8&libraries=places"></script>
 
         <CssBaseline />
         <AppBar
@@ -151,20 +151,20 @@ class NavigationBar extends React.Component<Props>{
           </List>
           <Divider />
           <List>
-          <Link to="/newOrg" style={{ textDecoration: 'none' }}>
-            <ListItem button key={'stats'}>
-              <ListItemText primary={'Statistique'} />
-            </ListItem>
+            <Link to="/statistics" style={{ textDecoration: 'none' }}>
+              <ListItem button key={'stats'}>
+                <ListItemText primary={'Statistique'} />
+              </ListItem>
             </Link>
             <Link to="/newOrg" style={{ textDecoration: 'none' }}>
-            <ListItem button key={'about'}>
-              <ListItemText primary={'À propos'} />
-            </ListItem>
+              <ListItem button key={'about'}>
+                <ListItemText primary={'À propos'} />
+              </ListItem>
             </Link>
             <Link to="/newOrg" style={{ textDecoration: 'none' }}>
-            <ListItem button key={'donate'}>
-              <ListItemText primary={'Donner'} />
-            </ListItem>
+              <ListItem button key={'donate'}>
+                <ListItemText primary={'Donner'} />
+              </ListItem>
             </Link>
           </List>
         </Drawer>
@@ -173,7 +173,7 @@ class NavigationBar extends React.Component<Props>{
             [classes.contentShift]: open,
           })}
         >
-        <div className={classes.drawerHeader} />
+          <div className={classes.drawerHeader} />
           {this.props.children}
         </main>
       </div>
