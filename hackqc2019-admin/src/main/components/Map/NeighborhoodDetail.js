@@ -1,5 +1,6 @@
 import React from 'react'
-import { Card, CardHeader, CardContent } from "@material-ui/core";
+import { withRouter } from 'react-router-dom';
+import { Card, CardHeader, CardContent, List, ListItem, ListItemText, Typography } from "@material-ui/core";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Neighborhood from '../../domain/Neighborhood';
 
@@ -8,7 +9,7 @@ type Props = {
   fetching: boolean,
 }
 
-export default function NeighborhoodDetail({ neighborhood, fetching }: Props) {
+function NeighborhoodDetail({ neighborhood, fetching, history }: Props) {
   return (
     <Card>
       <CardHeader
@@ -21,10 +22,31 @@ export default function NeighborhoodDetail({ neighborhood, fetching }: Props) {
           <CircularProgress color="primary" size={30} thickness={5} />
         }
 
-        {neighborhood.organisations.map(organisation => (
-          <div key={organisation.reference} />
-        ))}
+        {!fetching &&
+          <React.Fragment>
+            <Typography variant="h7">
+              Organisations
+            </Typography>
+
+            {neighborhood.organisations.length > 0 ?
+              <List>
+                {neighborhood.organisations.map(organization => (
+                  <ListItem button key={organization.reference} onClick={() => history.push(`/org/${organization.reference}`, { org: organization })}>
+                    <ListItemText primary={organization.name} secondary={organization.address} />
+                  </ListItem>
+                ))
+                }
+              </List>
+              :
+              <Typography variant="p" style={{ color: 'grey', fontSize: '12px' }}>
+                Aucune organisation répertoriée
+            </Typography>
+            }
+          </React.Fragment>
+        }
       </CardContent>
     </Card>
   )
 }
+
+export default withRouter(NeighborhoodDetail)

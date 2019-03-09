@@ -20,10 +20,10 @@ class Statistics extends React.Component {
   componentDidMount() {
     requestJson(JsonPath, (error, response) => {
       if (!error) {
-        console.log(response.features);
         this.setState({ features: response.features })
       }
     });
+    this.fetchStatistics()
   }
 
   fetchStatistics = async () => {
@@ -73,7 +73,10 @@ class Statistics extends React.Component {
         </InfoBox>
 
         {selectedNeighborhood &&
-          <NeighborhoodDetail fetching={fetching} neighborhood={selectedNeighborhood} />
+          <NeighborhoodDetail
+            fetching={fetching}
+            neighborhood={selectedNeighborhood}
+          />
         }
       </div>
     )
