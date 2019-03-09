@@ -56,12 +56,11 @@ class CreateOrg extends React.Component<Props,State> {
   };
 
   submit = async () => {
-    console.log(this.state)
     try {
       const result = await HttpClient.post('organizations',{...this.state, services:[]})
-      console.log(result)
+      //todo succes
     } catch(e) {
-      console.log(e);
+      //error
     }
   }
 
