@@ -13,7 +13,7 @@ const styles = {
   }
 }
 
-function GMap({ features, onNeighborhoodPress }) {
+function GMap({ features, onNeighborhoodPress, selectedNeighborhood }) {
   return (
     <div style={{ position: 'relative' }}>
       <GoogleMap
@@ -32,10 +32,10 @@ function GMap({ features, onNeighborhoodPress }) {
             key={feature.properties.NOM}
             options={{
               fillColor: "#000",
-              fillOpacity: 0.4,
+              fillOpacity: selectedNeighborhood && selectedNeighborhood.name === feature.properties.NOM ? 0.6 : 0.4,
               strokeColor: "#000",
               strokeOpacity: 1,
-              strokeWeight: 1
+              strokeWeight: selectedNeighborhood && selectedNeighborhood.name === feature.properties.NOM ? 3 : 1
             }}
             onClick={() => {
               onNeighborhoodPress(feature)
