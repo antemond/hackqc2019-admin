@@ -110,7 +110,7 @@ class Statistics extends React.Component {
             neighborhood={selectedNeighborhood}
           />
         }
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 10 }} onClick={() => this.downloadStats()}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 10 }} >
 
           {this.state.error &&
             <div style={{ backgroundColor: "#f44646", borderRadius: 10, borderWidth: 1, border: 'solid', borderColor: 'red', paddingLeft: 20, paddingRight: 20, width: '100%' }}>
@@ -122,7 +122,7 @@ class Statistics extends React.Component {
             <CircularProgress />
           }
           {!this.state.loadingStats &&
-            <Button color="primary" variant="outlined">
+            <Button color="primary" variant="outlined" onClick={() => this.downloadStats()}>
               Télécharger les statistiques par arrondissement (json)
           </Button>
           }

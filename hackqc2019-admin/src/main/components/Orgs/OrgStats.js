@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import HttpClient from '../../services/HttpClient';
-import { Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { Paper, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -54,6 +54,40 @@ class OrgStats extends React.Component<Props,State>{
     this.setState({donations: donations.donations,transactions :transactions.transactions})
   }
 
+  downloadDonations = async () => {
+      let filename = `${this.props.org.name}-donations.json`;
+      let contentType = "application/json;charset=utf-8;";
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        var blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(this.state.donations)))], { type: contentType });
+        navigator.msSaveOrOpenBlob(blob, filename);
+      } else {
+        var a = document.createElement('a');
+        a.download = filename;
+        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(this.state.donations));
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+  }
+
+  downloadTransactions = async () => {
+    let filename = `${this.props.org.name}-transactions.json`;
+      let contentType = "application/json;charset=utf-8;";
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        var blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(this.state.transactions)))], { type: contentType });
+        navigator.msSaveOrOpenBlob(blob, filename);
+      } else {
+        var a = document.createElement('a');
+        a.download = filename;
+        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(this.state.transactions));
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+  }
+
   render(){
   const {org,classes} = this.props
   return (
@@ -65,6 +99,9 @@ class OrgStats extends React.Component<Props,State>{
         <Typography color="textPrimary">
           Donations à l'organisme
         </Typography>
+        <Button color="primary" variant="outlined" onClick={()=>this.downloadDonations()}>
+              Télécharger les donations (json)
+        </Button>
       <Table className={classes.table} >
         <TableHead>
           <TableRow>
@@ -93,6 +130,9 @@ class OrgStats extends React.Component<Props,State>{
         <Typography color="textPrimary">
           Transaction à l'organisme
         </Typography>
+        <Button color="primary" variant="outlined" onClick={()=>this.downloadTransactions()}>
+              Télécharger les transactions (json)
+        </Button>
       <Table className={classes.table} >
         <TableHead>
           <TableRow>
