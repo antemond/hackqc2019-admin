@@ -9,6 +9,7 @@ import { Paper } from '@material-ui/core';
 import {withRouter} from 'react-router-dom';
 import HttpClient from '../../services/HttpClient';
 import OrgInfo from './OrgInfo';
+import OrgStats from './OrgStats';
 
 function TabContainer(props) {
   return (
@@ -73,7 +74,7 @@ class OrgDetails extends React.Component<Props,State> {
           </Tabs>
         </AppBar>
         {tab === 0 && <TabContainer><OrgInfo org={org} /></TabContainer>}
-        {tab === 1 && <TabContainer>Statistique</TabContainer>}
+        {tab === 1 && <TabContainer><OrgStats org={org} /></TabContainer>}
       </div>
       </Paper>
         </div>
