@@ -118,7 +118,7 @@ class NavigationBar extends React.Component<Props>{
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
-              Donatello
+              Nexapp HackQc 2019
             </Typography>
           </Toolbar>
         </AppBar>
@@ -154,16 +154,6 @@ class NavigationBar extends React.Component<Props>{
             <Link to="/statistics" style={{ textDecoration: 'none' }}>
               <ListItem button key={'stats'}>
                 <ListItemText primary={'Statistique'} />
-              </ListItem>
-            </Link>
-            <Link to="/newOrg" style={{ textDecoration: 'none' }}>
-              <ListItem button key={'about'}>
-                <ListItemText primary={'À propos'} />
-              </ListItem>
-            </Link>
-            <Link to="/newOrg" style={{ textDecoration: 'none' }}>
-              <ListItem button key={'donate'}>
-                <ListItemText primary={'Donner'} />
               </ListItem>
             </Link>
           </List>

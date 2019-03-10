@@ -6,6 +6,7 @@ import HttpClient from '../services/HttpClient';
 import InfoBox from "react-google-maps/lib/components/addons/InfoBox";
 import NeighborhoodDetail from './Map/NeighborhoodDetail';
 import Neighborhood from '../domain/Neighborhood';
+import { Button, CircularProgress } from '@material-ui/core';
 
 class Statistics extends React.Component {
   constructor(props) {
@@ -14,6 +15,8 @@ class Statistics extends React.Component {
     this.state = {
       features: [],
       selectedNeighborhood: undefined,
+      loadingStats: false,
+      errorStats:false
     }
   }
 
@@ -56,6 +59,33 @@ class Statistics extends React.Component {
     }
   }
 
+  downloadStats = async () => {
+    try{
+      this.setState({errorStats: false, loadingStats: true})
+      const result = await HttpClient.get('statistics',undefined);
+      console.log(result);
+      let filename = "export.json";
+      let contentType = "application/json;charset=utf-8;";
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        var blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(result)))], { type: contentType });
+        navigator.msSaveOrOpenBlob(blob, filename);
+      } else {
+        var a = document.createElement('a');
+        a.download = filename;
+        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(result));
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        this.setState({errorStats: false, loadingStats: false})
+      }
+    } catch(e){
+      console.log(e)
+      this.setState({errorStats: true, loadingStats: false})
+
+    }
+  }
+
   render() {
     const { selectedNeighborhood, fetching } = this.state;
 
@@ -78,6 +108,23 @@ class Statistics extends React.Component {
             neighborhood={selectedNeighborhood}
           />
         }
+        <div style={{display: 'flex', justifyContent:'center', alignItems:'center', marginTop: 10}} onClick={()=>this.downloadStats()}>
+
+          {this.state.error &&
+            <div style={{backgroundColor: "#f44646",borderRadius: 10, borderWidth: 1,border: 'solid', borderColor: 'red', paddingLeft: 20, paddingRight: 20,width:'100%'}}>
+              <h5 style={{color:'white'}}>Un problème est survenu, veuillez réessayer plus tard</h5>
+            </div>
+          }
+
+          {this.state.loadingStats &&
+            <CircularProgress />
+          }
+          {!this.state.loadingStats &&
+          <Button color="primary" variant="outlined">
+            Télécharger les statistique (json)
+          </Button>
+          }
+        </div>
       </div>
     )
   }

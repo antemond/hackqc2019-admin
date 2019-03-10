@@ -6,6 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import SimpleMap from '../Map/SimpleMap';
+import OrganisationServices from './OrganisationServices';
+import HttpClient from '../../services/HttpClient';
+import { runInThisContext } from 'vm';
 
 const styles = theme => ({
   root: {
@@ -32,8 +35,16 @@ type Props = {
   classes: any,
 };
 
-function OrgInfo(props: Props){
-  const {org,classes} = props
+class OrgInfo extends React.Component<Props>{
+
+  getCode = async () => {
+    const result = await HttpClient.get(`recipients/${this.props.org.reference}/tag`,undefined)
+    window.open(result.qrcode_url, "_blank")
+    console.log(result)
+  }
+
+  render(){
+  const {org,classes} = this.props
   return (
     <div style={{display:'flex', justifyContent: 'center', flexDirection: 'column'}}>
       {!!org &&
@@ -52,6 +63,11 @@ function OrgInfo(props: Props){
         <Typography color="textSecondary" style={{marginTop: 15}}>
           {org.address}
         </Typography>
+        <Button color="primary" variant="outlined" style={{marginTop: 10}} onClick={() => this.getCode() }>
+        Imprimmer Code
+      </Button>
+        <Divider style={{marginTop: 10, marginBottom:20}} />
+      <OrganisationServices organisation={org} />
       </div>
       <Divider variant="middle" />
       <div className={classes.section2}>
@@ -61,6 +77,6 @@ function OrgInfo(props: Props){
       }
     </div>
   );
-}
+}}
 
 export default withStyles(styles)(OrgInfo);
