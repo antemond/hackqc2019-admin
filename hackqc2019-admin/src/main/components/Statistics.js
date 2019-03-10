@@ -32,8 +32,10 @@ class Statistics extends React.Component {
   fetchStatistics = async () => {
     try {
       const response = await HttpClient.get('statistics')
+      const anotherResponse = await HttpClient.get('statistics?city=montreal')
 
-      this.setState({ stats: response.map(plain => new NeighborhoodStat(plain)) })
+      const tmp = [...response, ...anotherResponse]
+      this.setState({ stats: tmp.map(plain => new NeighborhoodStat(plain)) })
     } catch (e) {
       // Nothing to do
     }
@@ -43,13 +45,13 @@ class Statistics extends React.Component {
     const neighborhood = new Neighborhood(feature.properties);
 
     this.setState({ selectedNeighborhood: neighborhood })
-    await this.fetchNeighborhood(neighborhood)
+    await this.fetchNeighborhood(neighborhood, feature.properties.NOM ? 'quebec' : 'montreal')
   }
 
-  fetchNeighborhood = async (neighborhood: Neighborhood) => {
+  fetchNeighborhood = async (neighborhood: Neighborhood, city) => {
     try {
       this.setState({ fetching: true })
-      const response = await HttpClient.get(`statistics?neighborhood=${encodeURI(neighborhood.name)}`)
+      const response = await HttpClient.get(`statistics?neighborhood=${encodeURI(neighborhood.name)}&city=${city}`)
       const updatedNeighborhood = this.state.selectedNeighborhood.update(response)
       this.setState({ fetching: false, selectedNeighborhood: updatedNeighborhood })
     } catch (e) {
