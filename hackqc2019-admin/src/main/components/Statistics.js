@@ -63,7 +63,6 @@ class Statistics extends React.Component {
     try{
       this.setState({errorStats: false, loadingStats: true})
       const result = await HttpClient.get('statistics',undefined);
-      console.log(result);
       let filename = "export.json";
       let contentType = "application/json;charset=utf-8;";
       if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -80,7 +79,6 @@ class Statistics extends React.Component {
         this.setState({errorStats: false, loadingStats: false})
       }
     } catch(e){
-      console.log(e)
       this.setState({errorStats: true, loadingStats: false})
 
     }
@@ -121,7 +119,7 @@ class Statistics extends React.Component {
           }
           {!this.state.loadingStats &&
           <Button color="primary" variant="outlined">
-            Télécharger les statistique (json)
+            Télécharger les statistiques par arrondissement (json)
           </Button>
           }
         </div>
