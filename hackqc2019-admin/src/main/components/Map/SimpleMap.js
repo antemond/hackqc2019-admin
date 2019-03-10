@@ -1,17 +1,16 @@
 import React from 'react';
 import { compose, withProps } from "recompose"
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
 
 function SimpleMap(props) {
-  console.log(props)
-  return(
+  return (
     <GoogleMap
-    defaultZoom={15}
-    defaultCenter={{ lat:props.position.lat, lng: props.position.lon }}
-    > 
-    <Marker position={{ lat: props.position.lat, lng: props.position.lon }} />
-  </GoogleMap>
+      defaultZoom={15}
+      defaultCenter={{ lat: props.position.lat, lng: props.position.lon }}
+    >
+      <Marker position={{ lat: props.position.lat, lng: props.position.lon }} />
+    </GoogleMap>
   )
 }
 
@@ -22,7 +21,7 @@ export default compose(
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
-  withGoogleMap)((props) =>(
+  withGoogleMap)((props) => (
     <SimpleMap {...props} />
   )
-);
+  );

@@ -1,7 +1,9 @@
 import React from 'react'
 import { compose, withProps } from "recompose"
 import { withGoogleMap, GoogleMap, Polygon } from "react-google-maps"
-import { Paper, Typography } from '@material-ui/core';
+import { Paper, Typography, CardHeader, Card, CircularProgress } from '@material-ui/core';
+
+const COLOR = '#3f51b5'
 
 const styles = {
   legend: {
@@ -13,7 +15,18 @@ const styles = {
   }
 }
 
-function GMap({ features, onNeighborhoodPress, selectedNeighborhood }) {
+function featureName(feature) {
+  return feature.properties.NOM || feature.properties.Arrondissement
+}
+
+function GMap({ features, onNeighborhoodPress, selectedNeighborhood, stats }) {
+  stats.sort((a, b) => {
+    return a.donated - b.donated
+  })
+
+  const min = stats[0] ? stats[0].donated : 1
+  const max = stats[stats.length - 1] ? stats[stats.length - 1].donated : 1
+
   return (
     <div style={{ position: 'relative' }}>
       <GoogleMap
@@ -26,38 +39,78 @@ function GMap({ features, onNeighborhoodPress, selectedNeighborhood }) {
 
         }}
       >
-        {features.map((feature) => (
-          <Polygon
-            path={feature.geometry.coordinates[0].map(c => ({ lat: c[1], lng: c[0] }))}
-            key={feature.properties.NOM}
-            options={{
-              fillColor: "#000",
-              fillOpacity: selectedNeighborhood && selectedNeighborhood.name === feature.properties.NOM ? 0.6 : 0.4,
-              strokeColor: "#000",
-              strokeOpacity: 1,
-              strokeWeight: selectedNeighborhood && selectedNeighborhood.name === feature.properties.NOM ? 3 : 1
-            }}
-            onClick={() => {
-              onNeighborhoodPress(feature)
-            }} />
-        ))
+        {features.map((feature) => {
+          const featureStat = stats.find(s => s.name === featureName(feature))
+          const fillColorOpacity = 0.4 * ((featureStat ? featureStat.donated : 0) / max) + 0.2
+          if (feature.geometry.type === "Polygon") {
+            return (
+              <Polygon
+                path={feature.geometry.coordinates[0].map(c => ({ lat: c[1], lng: c[0] }))}
+                key={`${featureName(feature)}-${feature.properties.id || feature.properties.ID}`}
+                options={{
+                  fillColor: COLOR,
+                  fillOpacity: fillColorOpacity,
+                  strokeColor: COLOR,
+                  strokeOpacity: 1,
+                  strokeWeight: selectedNeighborhood && selectedNeighborhood.name === featureName(feature) ? 3 : 1
+                }}
+                onClick={() => {
+                  onNeighborhoodPress(feature)
+                }}
+              />
+            )
+          }
+          return mapMultiPolygon(feature).map((a, index) => {
+            return (
+              <Polygon
+                paths={a}
+                key={`${featureName(feature)}-${feature.properties.id || feature.properties.ID}-${index}`}
+                options={{
+                  fillColor: `rgb(63, 81, 181, ${Math.min(fillColorOpacity, 0.3)})`,
+                  fillOpacity: selectedNeighborhood && selectedNeighborhood.name === featureName(feature) ? 0.6 : 0.4,
+                  strokeColor: COLOR,
+                  strokeOpacity: 1,
+                  strokeWeight: selectedNeighborhood && selectedNeighborhood.name === featureName(feature) ? 3 : 1
+                }}
+                onClick={() => {
+                  onNeighborhoodPress(feature)
+                }}
+              />
+            )
+          })
+        })
         }
       </GoogleMap>
 
-      <Paper style={styles.legend}>
-        <Typography component="p">
-          Legende
-        </Typography>
-        <Paper style={{
-          backgroundImage: 'linear-gradient(to right, rgb(63, 81, 181, 0.2), #3f51b5)',
-          height: 20,
-          width: 200,
-        }}>
-
-        </Paper>
-      </Paper>
+      <Card style={styles.legend}>
+        <CardHeader
+          title={<Typography variant="h6">Total des donations</Typography>}
+          style={{ padding: 0, paddingBottom: 10 }}
+        />
+        {stats.length === 0 ?
+          <CircularProgress color="primary" size={25} />
+          :
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+            <span style={{ width: 40, marginRight: 10, textAlign: 'right' }}>{min}</span>
+            <Paper
+              style={{
+                backgroundImage: 'linear-gradient(to right, rgb(63, 81, 181, 0.2), rgb(63, 81, 181, 0.8))',
+                height: 20,
+                width: 200,
+              }}
+            />
+            <span style={{ width: 40, marginLeft: 10 }}>{max}</span>
+          </div>
+        }
+      </Card>
     </div >
   )
+
+  function mapMultiPolygon(feature) {
+    return feature.geometry.coordinates.map(a => {
+      return a.map(b => b.map(c => ({ lat: c[1], lng: c[0] })))
+    });
+  }
 }
 
 const mapEnvironement = compose(

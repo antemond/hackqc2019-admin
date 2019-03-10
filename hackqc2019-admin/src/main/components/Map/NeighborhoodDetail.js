@@ -10,21 +10,31 @@ type Props = {
 }
 
 function NeighborhoodDetail({ neighborhood, fetching, history }: Props) {
+  console.log(neighborhood);
   return (
     <Card>
       <CardHeader
         title={neighborhood.name}
-        subheader={neighborhood.donated >= 0 ? `Donation: ${neighborhood.donated}$` : undefined}
+        subheader={<div>
+          <Typography>
+            {neighborhood.donators >= 0 ? `Donateurs: ${neighborhood.donators} personnes` : undefined}
+          </Typography>
+          <Typography>
+            {neighborhood.donated >= 0 ? `Donation: ${neighborhood.donated}$` : undefined}
+          </Typography>
+        </div>
+        }
       />
 
       <CardContent>
+
         {fetching &&
           <CircularProgress color="primary" size={30} thickness={5} />
         }
 
         {!fetching &&
           <React.Fragment>
-            <Typography variant="h7">
+            <Typography variant="h6">
               Organisations
             </Typography>
 
@@ -38,7 +48,7 @@ function NeighborhoodDetail({ neighborhood, fetching, history }: Props) {
                 }
               </List>
               :
-              <Typography variant="p" style={{ color: 'grey', fontSize: '12px' }}>
+              <Typography style={{ color: 'grey', fontSize: '12px' }}>
                 Aucune organisation répertoriée
             </Typography>
             }

@@ -1,22 +1,19 @@
 class Neighborhood {
   name: string;
   id: number;
-  perimeter: number;
-  superficie: number;
   organisations: [];
   donated: number;
 
-  constructor({ NOM, ID, PERIMETRE, SUPERFICIE }) {
-    this.name = NOM;
+  constructor({ NOM, Arrondissement, ID }) {
+    this.name = NOM || Arrondissement;
     this.id = ID;
-    this.perimeter = PERIMETRE;
-    this.superficie = SUPERFICIE;
     this.organisations = [];
   }
 
-  update({ donated, organizations }) {
+  update({ donated, organizations, donators }) {
     this.organisations = organizations;
     this.donated = donated;
+    this.donators = donators
 
     return this
   }
