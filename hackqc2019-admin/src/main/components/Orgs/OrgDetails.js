@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { Paper } from '@material-ui/core';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import HttpClient from '../../services/HttpClient';
 import OrgInfo from './OrgInfo';
 import OrgStats from './OrgStats';
@@ -40,19 +40,19 @@ type State = {
   org: any,
 };
 
-class OrgDetails extends React.Component<Props,State> {
+class OrgDetails extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
     this.state = {
-      tab:0,
+      tab: 0,
       org: undefined,
     }
   }
 
   async componentDidMount() {
-    const org = await HttpClient.get(`organizations/${this.props.match.params.id}`,undefined);
-    this.setState({org})
+    const org = await HttpClient.get(`organizations/${this.props.match.params.id}`, undefined);
+    this.setState({ org })
   }
 
   handleChange = (event, tab) => {
@@ -62,7 +62,6 @@ class OrgDetails extends React.Component<Props,State> {
   render() {
     const { classes } = this.props;
     const { tab, org } = this.state;
-    console.log(this.props)
     return (
         <div style={{display:'flex', justifyContent: 'center'}}>
           <Paper style={{width: '60%', alignSelf: 'center'}}>
@@ -77,7 +76,7 @@ class OrgDetails extends React.Component<Props,State> {
         {tab === 1 && <TabContainer><OrgStats org={org} /></TabContainer>}
       </div>
       </Paper>
-        </div>
+      </div>
     );
   }
 }

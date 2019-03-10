@@ -16,7 +16,7 @@ const styles = theme => ({
 });
 
 type State = {
-  orgs : any[],
+  orgs: any[],
 };
 
 type Props = {
@@ -26,7 +26,7 @@ type Props = {
   },
 };
 
-class OrgList extends React.Component<Props,State>{
+class OrgList extends React.Component<Props, State>{
 
   constructor(props) {
     super(props);
@@ -38,8 +38,8 @@ class OrgList extends React.Component<Props,State>{
 
   async componentDidMount() {
     const result = await HttpClient.get('organizations', undefined);
-    console.log(result)
-    this.setState({orgs: result.organizations})
+
+    this.setState({ orgs: result.organizations })
   }
 
   navigateToOrg = (org) => {
@@ -47,20 +47,21 @@ class OrgList extends React.Component<Props,State>{
   }
 
   render() {
-  const { classes } = this.props;
-  const {orgs} = this.state;
-  return (
-    <List className={classes.root}>
-      {
-        orgs.map(organization => (
-          <ListItem button key={organization.reference} onClick={() =>this.navigateToOrg(organization)}>
-            <ListItemText primary={organization.name} secondary={organization.address} />
-          </ListItem>
-        ))
-      }
-    </List>
-  );
-}}
+    const { classes } = this.props;
+    const { orgs } = this.state;
+    return (
+      <List className={classes.root}>
+        {
+          orgs.map(organization => (
+            <ListItem button key={organization.reference} onClick={() => this.navigateToOrg(organization)}>
+              <ListItemText primary={organization.name} secondary={organization.address} />
+            </ListItem>
+          ))
+        }
+      </List>
+    );
+  }
+}
 
 export default withRouter(withStyles(styles)(OrgList));
 
