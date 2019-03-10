@@ -51,7 +51,6 @@ class OrgDetails extends React.Component<Props,State> {
 
   async componentDidMount() {
     const org = await HttpClient.get(`organizations/${this.props.match.params.id}`,undefined);
-    console.log(org)
     this.setState({org})
   }
 
