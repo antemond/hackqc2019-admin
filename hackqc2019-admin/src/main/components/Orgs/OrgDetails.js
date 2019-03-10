@@ -68,13 +68,11 @@ class OrgDetails extends React.Component<Props, State> {
             <AppBar position="static">
               <Tabs value={tab} onChange={this.handleChange}>
                 <Tab label="Information" />
-                <Tab label="Services" />
                 <Tab label="Statistique" />
               </Tabs>
             </AppBar>
             {tab === 0 && <TabContainer><OrgInfo org={org} /></TabContainer>}
-            {tab === 1 && <TabContainer>Services</TabContainer>}
-            {tab === 2 && <TabContainer>Statistique</TabContainer>}
+            {tab === 1 && <TabContainer>Statistique</TabContainer>}
           </div>
         </Paper>
       </div>
