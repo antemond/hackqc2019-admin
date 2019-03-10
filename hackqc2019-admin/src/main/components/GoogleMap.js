@@ -40,6 +40,7 @@ function GMap({ features, onNeighborhoodPress, selectedNeighborhood, stats }) {
         }}
       >
         {features.map((feature) => {
+          const isSelected = selectedNeighborhood && selectedNeighborhood.name === featureName(feature)
           const featureStat = stats.find(s => s.name === featureName(feature))
           const fillColorOpacity = 0.4 * ((featureStat ? featureStat.donated : 0) / max) + 0.2
           if (feature.geometry.type === "Polygon") {
@@ -49,10 +50,10 @@ function GMap({ features, onNeighborhoodPress, selectedNeighborhood, stats }) {
                 key={`${featureName(feature)}-${feature.properties.id || feature.properties.ID}`}
                 options={{
                   fillColor: COLOR,
-                  fillOpacity: fillColorOpacity,
+                  fillOpacity: isSelected ? fillColorOpacity + 0.2 : fillColorOpacity,
                   strokeColor: COLOR,
                   strokeOpacity: 1,
-                  strokeWeight: selectedNeighborhood && selectedNeighborhood.name === featureName(feature) ? 3 : 1
+                  strokeWeight: isSelected ? 3 : 1
                 }}
                 onClick={() => {
                   onNeighborhoodPress(feature)

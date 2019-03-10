@@ -15,7 +15,7 @@ export default function AppRouter() {
           <Route component={() => <CreateOrg />} exact path="/newOrg" />
           <Route component={() => <Statistics />} exact path="/statistics" />
           <Route component={(params) => <OrgDetails params={params} />} exact path="/org/:id" />
-          <Route component={() => <Redirect to="/" />} />
+          <Route component={() => <Redirect to="/org" />} />
         </Switch>
       </NavigationBar>
     </BrowserRouter>
